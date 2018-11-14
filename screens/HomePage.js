@@ -12,13 +12,10 @@ export default class extends React.Component {
 
 
   render() {
-
     return (
-      <View style={{flex:1, flexDirection: 'column', alignItem: 'flex-start'}}>
-
-
-
-      </View>
+        <View style={{flex:1, flexDirection: 'column', alignItem: 'flex-start'}}>
+        
+        </View>
     );
   }
 }
