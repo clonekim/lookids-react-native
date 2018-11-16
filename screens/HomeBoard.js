@@ -1,20 +1,18 @@
 import React from 'react';
+import { withNavigationFocus } from 'react-navigation';
+import { connect } from 'react-redux';
 import { Platform, 
          View,
          Text, 
-         TextInput,
-         Button,
-         Image,
          FlatList,
-         TouchableWithoutFeedback,
          TouchableOpacity,
          StyleSheet } from 'react-native';
 
 import HomeListItem from '../components/HomeListItem';
+import SearchBox    from '../components/SearchBox';
+import { fetchStores }  from '../actions';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-export default class HomeBoard extends React.Component {
+class HomeBoard extends React.Component {
   
   static navigationOptions = {
     tabBarLabel: '쇼핑몰'
@@ -23,55 +21,21 @@ export default class HomeBoard extends React.Component {
   constructor() {
     super();
     this.state = {
-      threads: []
-    };
+      isFocused: false
+    }
   }
 
   componentDidMount() {
-
-    // fetch('http://192.168.0.148:3000/api/malls', {
-    //   method:'GET',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     deviceOS: Platform.OS
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(responseJson => {
-    //   let threads = responseJson;
-    //   threads = threads.map(i=> {
-    //     i.key = '' + i.id
-    //     i.last_rank = '-'
-    //     i.rank = i.id
-    //     return i
-    //   });
-
-    //   this.setState({threads});
-    // })
-
-    this.setState({
-      threads: [
-        {key:'1', rank: 1, name: '83kjkd03'},
-        {key:'2', rank: 999, name:'xxx'}
-      ]
-    });
-
+    this.props.onLoad();
   }
 
   render() {
+
     return (
       <View style={{flex:1}}>
-        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('HomeSearch')}>
-          <View style={{backgroundColor:'#fff'}}>
-            <TextInput style={styles.searchBox}
-                       editable={false}
-                       defaultValue={"쇼핑몰 검색"}/>
-          </View>
-        </TouchableWithoutFeedback>
-       
+        <SearchBox path={'HomeSearch'}>쇼핑몰 검색 </SearchBox>
         <FlatList
-          data={this.state.threads}
+          data={this.props.stores}
           renderItem={({item}) => {
             return (
               <TouchableOpacity>
@@ -89,7 +53,6 @@ export default class HomeBoard extends React.Component {
 
 
 const styles =StyleSheet.create({
-
   searchBox:{
     height: 40,
     borderColor: 'gray',
@@ -97,5 +60,21 @@ const styles =StyleSheet.create({
     padding: 10,
     margin: 4
   }
-
 });
+
+const mapStateToProps = state => {
+  return {
+    stores: state.api.stores
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLoad() {
+      dispatch(fetchStores(null));
+    }
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigationFocus(HomeBoard));

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Image, ImageBackground, View, Text, TouchableOpacity } from 'react-native';
 import Masonry from 'react-native-masonry-layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SearchBox from '../components/SearchBox';
 
 export default class Item extends Component {
 
@@ -27,6 +28,7 @@ export default class Item extends Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor: '#fff'}}>
+        <SearchBox path={"ItemSearch"}>상품 검색</SearchBox>
 
         <Masonry
           ref="list"

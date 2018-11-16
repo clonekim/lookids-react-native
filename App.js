@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Platform, StatusBar, View, StyleSheet} from 'react-native';
 import {createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
 
@@ -6,9 +6,11 @@ import HomeBoard          from './screens/HomeBoard';
 import ItemBoard          from './screens/ItemBoard';
 import FavoriteBoard      from './screens/FavoriteBoard';
 import HomeSearch         from './screens/HomeSearch';
+import NavigationService  from './navigationService';
+
 
 // 탭기반 화면들
-const HomeStack = createMaterialTopTabNavigator ({
+const TabNavigator = createMaterialTopTabNavigator ({
   HomeBoard, //쇼핑몰
   ItemBoard, //상품랭킹
   FavoriteBoard, //보관함
@@ -23,8 +25,8 @@ const HomeStack = createMaterialTopTabNavigator ({
 });
 
 
-const RootStack = createStackNavigator ({
-  HomeStack,
+const RootNavigator = createStackNavigator ({
+  TabNavigator,
   HomeSearch,
 },{
   mode: 'modal',
@@ -33,13 +35,13 @@ const RootStack = createStackNavigator ({
 
 
 
-export default class App extends Component {
+export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.layout}>
-        <StatusBar hide={true} />
-        <RootStack />
-      </View>
+        <RootNavigator 
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+          }}/>
     );
   }
 }

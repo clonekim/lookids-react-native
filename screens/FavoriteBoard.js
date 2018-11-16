@@ -10,8 +10,18 @@ export default class Item extends Component {
 
   render() {
     return (
-      <View style={{flex:1, alignItems: 'center', justifyContent:'center'}}>
-        <Text>보관함</Text>
+      <View style={{flex:1}}>
+        <View style={{flex:1}}>
+          <Text>즐겨찾기 (16)</Text>
+          <View>
+            
+          </View>
+        </View>
+
+        <View style={{flex:1}}>
+          <Text>찜한 상품 (18)</Text>
+        </View>
+      
       </View>
     );
   }

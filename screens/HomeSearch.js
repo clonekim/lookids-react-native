@@ -29,7 +29,7 @@ export default class extends Component {
               <TextInput style={{backgroundColor:'#fff', fontSize:14}} autoFocus={true} />
             </View>
 
-          </View>          
+          </View>
         </View>
 
         <View style={{ flexDirection: 'column', padding: 4}}>
