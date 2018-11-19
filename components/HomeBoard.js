@@ -1,16 +1,10 @@
 import React from 'react';
-import { withNavigationFocus } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Platform, 
-         View,
-         Text, 
-         FlatList,
-         TouchableOpacity,
-         StyleSheet } from 'react-native';
-
-import HomeListItem from '../components/HomeListItem';
-import SearchBox    from '../components/SearchBox';
-import { fetchStores }  from '../actions';
+import { withNavigationFocus } from 'react-navigation';
+import { Platform, View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import HomeListItem from './HomeListItem';
+import SearchBox    from './SearchBox';
+import { fetchContents } from '../actions/contents';
 
 class HomeBoard extends React.Component {
   
@@ -24,18 +18,22 @@ class HomeBoard extends React.Component {
       isFocused: false
     }
   }
-
+  
   componentDidMount() {
-    this.props.onLoad();
+    this.props.fetchData('http://192.168.0.148:8000/stores');
   }
 
   render() {
+    if(this.props.isLoading) {
+      return <Text> Loading... </Text>
+    }
 
-    return (
+    return (      
       <View style={{flex:1}}>
         <SearchBox path={'HomeSearch'}>쇼핑몰 검색 </SearchBox>
         <FlatList
-          data={this.props.stores}
+          data={this.props.contents}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) => {
             return (
               <TouchableOpacity>
@@ -62,19 +60,15 @@ const styles =StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => {
-  return {
-    stores: state.api.stores
-  }
-}
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onLoad() {
-      dispatch(fetchStores(null));
-    }
-  };
-};
+const mapStateToProps = state => ({
+  contents: state.contents,
+  hasError: state.getContentsError,
+  isLoading: state.loadContents
+});
 
+const mapDispatchToProps= dispatch => ({
+  fetchData: (url) => dispatch(fetchContents(url))
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigationFocus(HomeBoard));
+export default connect(mapStateToProps, mapDispatchToProps)(HomeBoard);

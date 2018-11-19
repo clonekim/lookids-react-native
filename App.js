@@ -1,59 +1,20 @@
 import React from 'react';
-import {Platform, StatusBar, View, StyleSheet} from 'react-native';
-import {createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
-
-import HomeBoard          from './screens/HomeBoard';
-import ItemBoard          from './screens/ItemBoard';
-import FavoriteBoard      from './screens/FavoriteBoard';
-import HomeSearch         from './screens/HomeSearch';
+import RootNavigator      from './components/RootNavigator';
 import NavigationService  from './navigationService';
+import { Provider }       from 'react-redux';
+import configureStore     from './store/configureStore';
 
-
-// 탭기반 화면들
-const TabNavigator = createMaterialTopTabNavigator ({
-  HomeBoard, //쇼핑몰
-  ItemBoard, //상품랭킹
-  FavoriteBoard, //보관함
-},{
-  tabBarOptions: {
-    activeTintColor: 'black',
-    inactiveTintColor: 'gray',
-    style: {
-      backgroundColor: 'white'
-    }
-  }
-});
-
-
-const RootNavigator = createStackNavigator ({
-  TabNavigator,
-  HomeSearch,
-},{
-  mode: 'modal',
-  headerMode: 'none',
-});
-
-
+const store = configureStore();
 
 export default class App extends React.Component {
   render() {
     return (
+      <Provider store={store}>
         <RootNavigator 
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
           }}/>
+      </Provider>
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  layout: {
-    flex: 1,
-    flexDirection: 'column',
-    ...Platform.select({
-      ios: {paddingTop: 20},
-      android: {paddingTop: 0}
-    })
-  }
-});
