@@ -5,6 +5,7 @@ import { Platform, View, Text, FlatList, TouchableOpacity, StyleSheet } from 're
 import HomeListItem from './HomeListItem';
 import SearchBox    from './SearchBox';
 import { fetchContents } from '../actions/contents';
+import NavigationService from '../navigationService';
 
 class HomeBoard extends React.Component {
   
@@ -36,7 +37,7 @@ class HomeBoard extends React.Component {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=> NavigationService.navigate('HomePage', item) }>
                 <View style={{flex: 1}}>
                   <HomeListItem {...item}/>
                 </View>

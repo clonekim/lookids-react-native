@@ -1,4 +1,4 @@
-package com.lookids;
+package co.kr.lookids;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.lookids;
+package co.kr.lookids;
 
 import com.facebook.react.ReactActivity;
 
