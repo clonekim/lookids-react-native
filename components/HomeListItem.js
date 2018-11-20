@@ -1,12 +1,7 @@
 import React, { Component}  from 'react';
-import { StyleSheet,
-         TouchableOpacity,
-         Text,
-         View,
-         Image } from 'react-native';
-
+import { StyleSheet, TouchableOpacity, Text, View,Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import navigationService from '../navigationService';
 
 export default class extends Component {
   render() {

@@ -6,11 +6,14 @@ import HomeListItem from './HomeListItem';
 import SearchBox    from './SearchBox';
 import { fetchContents } from '../actions/contents';
 import NavigationService from '../navigationService';
+import { apiEndPoint } from '../config'
+
+
 
 class HomeBoard extends React.Component {
   
   static navigationOptions = {
-    tabBarLabel: '쇼핑몰'
+    tabBarLabel: '샵랭킹'
   };
 
   constructor() {
@@ -18,10 +21,11 @@ class HomeBoard extends React.Component {
     this.state = {
       isFocused: false
     }
+
   }
   
   componentDidMount() {
-    this.props.fetchData('http://192.168.0.148:8000/stores');
+    this.props.fetchData( apiEndPoint + '/stores');
   }
 
   render() {

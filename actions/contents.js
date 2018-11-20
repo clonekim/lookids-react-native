@@ -1,3 +1,5 @@
+import {AsyncStorage} from 'react-native';
+
 export const getContentsError = state => ({
   type: 'GET_CONTENTS_ERROR',
   hasError: state
@@ -14,21 +16,39 @@ export const fetchContentsSuccess = contents => ({
 })
 
 
+
 export const fetchContents = url => {
+
   return (dispatch) => {
     dispatch(loadContents(true));
+    
+    AsyncStorage.getItem('token', (err, result) => {
+      let headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
 
-    fetch(url)
-      .then((response) => {
-        if(!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(loadContents(false));
-
-        return response;
+      if(result)
+        headers['Authorization'] = 'Bearer ' + result
+      
+      fetch(url, {
+        method: 'GET',
+        headers: headers
       })
-      .then((response) => response.json())
-      .then((contents) => dispatch(fetchContentsSuccess(contents)))
-      .catch(() => dispatch(getContentsError(true)));
+        .then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          dispatch(loadContents(false));
+          return response;
+        })
+        .then((response) => response.json())
+        .then((contents) => dispatch(fetchContentsSuccess(contents)))
+        .catch(() => dispatch(getContentsError(true)));
+    })
+    
+
+
+    
   }
 }

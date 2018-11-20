@@ -5,8 +5,8 @@ export default class extends React.Component {
   render() {
     return (
       <View style={styles.badge}> 
-        <Image source={{}} style={{width: 90, height: 90, borderRadius: 90/2}}/>
-        <Text style={styles.badgeText}>스윙베베</Text>
+        <Image source={{uri: this.props.url}} style={{width: 90, height: 90, borderRadius: 90/2}}/>
+        <Text style={styles.badgeText}>{this.props.name}</Text>
         <Text style={styles.badgeSmText}>상품수 </Text>
       </View>
     );

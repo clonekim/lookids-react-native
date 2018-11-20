@@ -1,20 +1,34 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Button,
          Image,
          ImageBackground,
          View,
          Text,
          TextInput,
+         FlatList,
          StyleSheet,
          TouchableOpacity,
          TouchableWithoutFeedback } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import HomeSearchListItem from './HomeSearchListItem';
+import { fetchSearch, fetchNop } from '../actions/search';
 
 
-export default class extends Component {
+class HomeSearch extends Component {
+
+
+  captchTextChange(text) {
+    if(text.trim().length > 0) {
+      this.props.fetchData('http://192.168.0.148:8000/stores?q=' + text);
+    }else {
+    }
+  }
+
 
   render() {
+
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <View style={{backgroundColor: 'gray', padding: 4, flexDirection:'row'}}>
@@ -26,25 +40,23 @@ export default class extends Component {
             </TouchableOpacity>
 
             <View style={{alignItem:'stretch', justifyContent:'center'}}>
-              <TextInput style={{backgroundColor:'#fff', fontSize:14}} autoFocus={true} />
+              <TextInput style={{backgroundColor:'#fff', fontSize:14}} autoFocus={true}  onChangeText={(text) => this.captchTextChange(text)}/>
             </View>
 
           </View>
         </View>
 
-        <View style={{ flexDirection: 'column', padding: 4}}>
-          <TouchableOpacity >
-            <View style={{ flexDirection:'row', borderWidth: 0, margin: 2}}>
-              <View style={{flex: 2}}>
-                <ImageBackground source={require('../assets/img-xxxhdpi.png')} style={{width:48, height:48}}/>
-              </View>
 
-              <View style={{flex: 5, alignItems: 'flex-start',  justifyContent:'center'}}>
-                <Text style={styles.contentText}>키즈몰</Text>
-              </View>
-            </View>
-          </TouchableOpacity>          
-        </View>
+        <FlatList
+          data={this.props.contents}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({item}) => {
+            return (
+              <View style={{ flexDirection: 'column', padding: 4}}>
+                <HomeSearchListItem {...item}/>
+              </View>          
+            );
+          }} />   
 
 
         <View style={{padding: 20}}>
@@ -54,6 +66,7 @@ export default class extends Component {
             </View>           
           </TouchableOpacity>
         </View>
+
       </View>
 
     );
@@ -84,3 +97,15 @@ const styles = StyleSheet.create({
 
 });
 
+
+const mapStateToProps = state => ({
+  contents: state.searches,
+  isTyping: state.loadSearch
+});
+
+const mapDispatchToProps= dispatch => ({
+  fetchData: (url) => dispatch(fetchSearch(url)),
+  fetchNop: () => dispatch(fetchNop())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeSearch);
