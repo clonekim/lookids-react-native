@@ -1,6 +1,8 @@
 import React from 'react';
 import {FlatList, View, Text, Button, TouchableOpacity, ToastAndroid, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ArrowButton from './ArrowButton';
+import FavoriteButton from './FavoriteButton';
 import { apiEndPoint } from '../config';
 
 export default class extends React.Component {
@@ -9,7 +11,7 @@ export default class extends React.Component {
     AsyncStorage.getItem('token', (err, token) => {
       
       if(err)
-        return
+        return;
 
       fetch( apiEndPoint + '/favorites', {
         method: 'POST',
@@ -24,34 +26,24 @@ export default class extends React.Component {
       }).then( res => res.json())
         .then( resJson => {
           ToastAndroid.show('즐겨찾기 되었습니다', ToastAndroid.SHORT);
-        })      
-    })    
+        });
+    });
   }
 
   
   render() {
     return (
-      <View style={{flex:1, backgroundColor:'#fff'}}>
-        <View style={{padding: 4, flexDirection:'row', height:40}}>
-          <View style={{flex:1, backgroundColor:'#fff', flexDirection:'row', paddingLeft:30, paddingRight:80}}>
-     
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{flex:1, justifyContent:'center'}} >
-              <View style={{ justifyContent:'center', alignItem:'center', paddingRight:10}}>
-                <Icon name="arrow-left" size={20} />
-              </View>
-            </TouchableOpacity>
+      <View style={{height:50, flexDirection:'row'}}>
+        <View style={{ alignItems:'flex-start', justifyContent:'center',  paddingLeft: 30}}>
+          <ArrowButton {...this.props} />
+        </View>
 
-            <View style={{flex:3, justifyContent:'center'}}>
-              <Text style={{backgroundColor:'#fff', fontSize:20}}>{this.props.navigation.getParam('name')}</Text>
-            </View>
-
-            <TouchableOpacity onPress={() => this.addFavorite() } style={{flex:2, alignItems: 'flex-end', justifyContent:'center', flex: 1}} >
-              <View style={{ justifyContent:'center', alignItem:'center', paddingRight:10}}>
-                <Icon name="plus-circle" size={40} />
-              </View>
-            </TouchableOpacity>
-
-          </View>
+        <View style={{alignItems:'flex-start',  justifyContent:'center', paddingLeft: 30}}>
+          <Text style={{fontSize:20}}>{this.props.navigation.getParam('name')}</Text>
+        </View>
+        
+        <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight: 13}}>
+          <FavoriteButton/>
         </View>
       </View>
     );

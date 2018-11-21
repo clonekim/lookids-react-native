@@ -5,6 +5,7 @@ import Masonry from 'react-native-masonry-layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HomePageNavigator from './HomePageNavigator';
 import NavigationService from '../navigationService';
+import Badge             from './Badge';
 import { apiEndPoint } from '../config';
 import util from '../util';
 
@@ -31,11 +32,10 @@ class HomePage extends React.Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <NavigationEvents
-          onWillFocus={payload => this.fetchData(payload)}/>
+        <NavigationEvents onWillFocus={payload => this.fetchData(payload)}/>
         <HomePageNavigator {...this.props}/>
-
-        <View style={{flex: 3}}>
+        <Badge {...this.props.navigation.state.params} />
+        <View style={{flex: 5}}>
           <Masonry
             ref="masonry"
             columns={3} 
@@ -58,7 +58,7 @@ class HomePage extends React.Component {
                       }}>
 
                   <View style={{alignItems:'center'}}>
-                    <TouchableOpacity style={{width:113, height:130}}>
+                    <TouchableOpacity style={{width:113, height:130}} onPress={()=> NavigationService.navigate('ItemWebPage', item)}>
                       <Image source={{uri: item.image_path }} style={{position:'absolute', left:0, top:0, width:113, height: 130}}/>
                     </TouchableOpacity>
                   </View>

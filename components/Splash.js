@@ -1,15 +1,16 @@
 import React from 'react';
 import {View, Text, ImageBackground, AsyncStorage} from 'react-native';
 import RNDeviceInfo from 'react-native-device-info';
+import { apiEndPoint } from '../config';
 
 export default class Splash extends React.Component {
   
   fetchToken() {
     return new Promise((resolve, reject) => {
-      fetch('http://192.168.0.148:8000/token', {
+      fetch( apiEndPoint + '/token', {
         method:'POST',
         headers: {
-          Accept: 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -40,16 +41,13 @@ export default class Splash extends React.Component {
     this.fetchToken().then((token) => {
       setTimeout(()=> {
         this.props.navigation.replace('TabNavigator')
-      }, 1000)
+      }, 1200)
     })
   }
   
   render() {
     return (
-      <ImageBackground source={require('../assets/splash.png')} style={{width:'100%', height: '100%'}}>
-        <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-end'}}>
-          <Text style={{fontSize:12}}>Connect...</Text>
-        </View>
+      <ImageBackground source={require('../assets/splash.png')} resizeMode={"contain"}  style={{width:'100%', height: '100%'}}>
       </ImageBackground>
     )
   }

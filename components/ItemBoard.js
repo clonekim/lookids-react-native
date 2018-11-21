@@ -28,8 +28,8 @@ export default class Item extends Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor: '#fff'}}>
+        <View style={{height:2, backgroundColor:'#dddddd'}}></View>
         <SearchBox path={"ItemSearch"}>상품 검색</SearchBox>
-
         <Masonry
           ref="list"
           columns={3} 

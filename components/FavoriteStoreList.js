@@ -1,6 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, Button, FlatList, StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 import {createStackNavigator, NavigationEvents } from 'react-navigation';
+import {s3Url} from '../config';
 
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -24,16 +25,21 @@ export default class extends React.Component {
 
   componentDidMount() {
     let threads = [
-      {id:1, path: 'http://192.168.0.148:8000/images/f1.png', name: '스윙베베'},
-      {id:2, path: 'http://192.168.0.148:8000/images/f2.png', name: '스타일노리터'},
-      {id:3, path: 'http://192.168.0.148:8000/images/f3.png', name: '윌튼키즈'},
-      {id:4, path: 'http://192.168.0.148:8000/images/f4.png', name: '미네'},
-      {id:5, path: 'http://192.168.0.148:8000/images/f5.png', name: '제이키즈'},
-      {id:6, path: 'http://192.168.0.148:8000/images/f6.png', name: '쿠키하우스'},
-      {id:7, path: 'http://192.168.0.148:8000/images/f7.png', name: '윌튼키즈'},
-      {id:8, path: 'http://192.168.0.148:8000/images/f8.png', name: '더보기'},
+      {id:1, path: 'f1.png', name: '스윙베베'},
+      {id:2, path: 'f2.png', name: '스타일노리터'},
+      {id:3, path: 'f3.png', name: '윌튼키즈'},
+      {id:4, path: 'f4.png', name: '미네뜨'},
+      {id:5, path: 'f5.png', name: '제이키즈'},
+      {id:6, path: 'f6.png', name: '쿠키하우스'},
+      {id:7, path: 'f7.png', name: '윌튼키즈'},
+      {id:8, path: 'f8.png', name: '더보기'},
 
     ];
+    threads.map((i) => {
+      i.path = s3Url + '/sample/' + i.path
+      return i
+    });
+
     this.setState({threads:threads});
   }
 

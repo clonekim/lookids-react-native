@@ -35,6 +35,7 @@ class HomeBoard extends React.Component {
 
     return (      
       <View style={{flex:1}}>
+        <View style={{height:2, backgroundColor:'#dddddd'}}></View>
         <SearchBox path={'HomeSearch'}>쇼핑몰 검색 </SearchBox>
         <FlatList
           data={this.props.contents}

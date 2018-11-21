@@ -1,14 +1,15 @@
 import React from 'react';
 import { TouchableOpacity, View, ImageBackground, Text, StyleSheet } from 'react-native';
+import NavigationService from '../navigationService';
 
 export default (props) => (
-  <TouchableOpacity >
+  <TouchableOpacity onPress={()=> NavigationService.navigate('HomePage', props) } >
     <View style={{ flexDirection:'row', borderWidth: 0, margin: 2}}>
-      <View style={{flex: 2}}>
+      <View style={{flex: 1}}>
         <ImageBackground source={require('../assets/img-xxxhdpi.png')} style={{width:48, height:48}}/>
       </View>
 
-      <View style={{flex: 5, alignItems: 'flex-start',  justifyContent:'center'}}>
+      <View style={{justifyContent:'center'}}>
         <Text style={styles.contentText}>{props.name}</Text>
       </View>
     </View>

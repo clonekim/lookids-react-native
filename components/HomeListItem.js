@@ -9,23 +9,23 @@ export default class extends Component {
       <View style={styles.list}>
 
         <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
-          <Text style={{color: '#495057'}}>{this.props.rank}</Text>
+          <Text style={{fontSize:12, color: '#495057'}}>{this.props.id}</Text>
         </View>
 
-        <View style={{flex: 2}}>
+        <View style={{flex: 1}}>
           <Image source={require('../assets/img-xxxhdpi.png')} style={{width:48, height:48}}/>
         </View>
 
-        <View style={{flex: 5, flexDirection:'row',  alignItems: 'center',  justifyContent:'flex-start'}}>
+        <View style={{flex: 5, flexDirection:'row', alignItems: 'center',  justifyContent:'flex-start'}}>
           <Text style={styles.contentText}>{this.props.name}</Text>
-          <Icon name="star" size={14} color={"red"}/>
+          <Icon name="star" size={14} color={"#ffaf08"}/>
         </View>
 
         <View style={{flex: 1,
                       alignItems:'center',
                       justifyContent:'center'}}>
 
-          <Text style={styles.contentHintText}>NEW</Text>
+          <Text style={styles.contentHintText}>-</Text>
         </View>
 
       </View>
@@ -47,7 +47,9 @@ const styles = StyleSheet.create({
   contentText: {
     color:'#343a40',
     fontSize: 13,
-    fontWeight:'400'
+    fontWeight:'400',
+    paddingLeft: 15,
+    paddingRight: 4
   },
   
   contentHintText: {

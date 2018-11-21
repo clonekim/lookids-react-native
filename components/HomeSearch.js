@@ -1,51 +1,58 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Button,
-         Image,
-         ImageBackground,
-         View,
-         Text,
-         TextInput,
-         FlatList,
-         StyleSheet,
-         TouchableOpacity,
-         TouchableWithoutFeedback } from 'react-native';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
+import {View, Text, FlatList, TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import HomeSearchListItem from './HomeSearchListItem';
-import { fetchSearch, fetchNop } from '../actions/search';
+import SearchTextInput  from './SearchTextInput';
+import {fetchSearch, fetchSearchSuccess } from '../actions/search';
+import {apiEndPoint} from '../config';
+
+const RequestSearchButton = (props) => {
+  if(props.keyword.trim().length > 0) {
+    return (
+        <View style={{padding: 20}}>
+          <TouchableOpacity style={{ padding: 10, borderWidth:1, borderColor:'gray', borderRadius: 40, backgroundColor: '#fff'}}>
+            <View style={{ justifyContent:'center', flexDirection:'row', alignItem:'center'}}>
+              <Text>'{props.keyword.trim()}' 쇼핑물 추가 요청하기</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+    );
+  } else {
+    return null;
+  }
+};
+
 
 
 class HomeSearch extends Component {
+  
+  constructor() {
+    super();
+    this.state = {
+      keyword: ''
+    };
 
+    this.captchTextChange.bind(this);
+  }
 
   captchTextChange(text) {
     if(text.trim().length > 0) {
-      this.props.fetchData('http://192.168.0.148:8000/stores?q=' + text);
+      this.props.fetchData(apiEndPoint + '/stores?q=' + text.trim());
     }else {
+      this.props.fetchZero();
     }
   }
 
+  receiveText(text) {
+    this.setState({keyword: text});
+    this.captchTextChange(text);
+  }
 
   render() {
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <View style={{backgroundColor: 'gray', padding: 4, flexDirection:'row'}}>
-          <View style={{flex:1, backgroundColor:'#fff', flexDirection:'row', paddingLeft:30, paddingRight:80}}>
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{justifyContent:'center'}} >
-              <View style={{ justifyContent:'center', alignItem:'center', paddingRight:10}}>
-                <Icon name="arrow-left" size={20} />
-              </View>
-            </TouchableOpacity>
-
-            <View style={{alignItem:'stretch', justifyContent:'center'}}>
-              <TextInput style={{backgroundColor:'#fff', fontSize:14}} autoFocus={true}  onChangeText={(text) => this.captchTextChange(text)}/>
-            </View>
-
-          </View>
-        </View>
-
+        <SearchTextInput {...this.props} updateText={this.receiveText.bind(this)}/>
 
         <FlatList
           data={this.props.contents}
@@ -58,14 +65,7 @@ class HomeSearch extends Component {
             );
           }} />   
 
-
-        <View style={{padding: 20}}>
-          <TouchableOpacity style={{ padding: 10, borderWidth:1, borderColor:'gray', borderRadius: 40, backgroundColor: '#fff'}}>
-            <View style={{ justifyContent:'center', flexDirection:'row', alignItem:'center'}}>
-              <Text>'키' 쇼핑물 추가 요청하기</Text>
-            </View>           
-          </TouchableOpacity>
-        </View>
+        <RequestSearchButton keyword={this.state.keyword}/>
 
       </View>
 
@@ -73,39 +73,14 @@ class HomeSearch extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-    flexDirection:'row',
-    backgroundColor: '#fff',
-    padding: 10,
-    marginTop: 2,
-    marginBottom: 1,
-  },
-
-  contentText: {
-    color:'#343a40',
-    fontSize: 13,
-    fontWeight:'400'
-  },
-  
-  contentHintText: {
-    color: '#ff4f38',
-    fontSize:9,
-    fontWeight: '700'
-  }
-
-});
-
 
 const mapStateToProps = state => ({
-  contents: state.searches,
-  isTyping: state.loadSearch
+  contents: state.searches
 });
 
 const mapDispatchToProps= dispatch => ({
   fetchData: (url) => dispatch(fetchSearch(url)),
-  fetchNop: () => dispatch(fetchNop())
+  fetchZero: () => dispatch(fetchSearchSuccess([]))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeSearch);

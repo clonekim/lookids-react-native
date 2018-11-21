@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import util from '../util';
 
 export default class extends React.Component {
   render() {
     return (
       <View style={styles.badge}> 
-        <Image source={{uri: this.props.url}} style={{width: 90, height: 90, borderRadius: 90/2}}/>
+        <Image source={require('../assets/brand.png')} style={{width: 90, height: 90, borderRadius: 90/2}}/>
         <Text style={styles.badgeText}>{this.props.name}</Text>
-        <Text style={styles.badgeSmText}>상품수 </Text>
+        <Text style={styles.badgeSmText}>상품수 {util.currencyFormat(this.props.total)}</Text>
       </View>
     );
   }
@@ -15,14 +16,14 @@ export default class extends React.Component {
 
 const styles = StyleSheet.create({
   badge: {
-    flex: 1,
+    height: 140,
+    justifyContent:'flex-start',
     flexDirection:'column',
     backgroundColor: '#fff',
     alignItems: 'center',
     borderWidth: 0,
   },
   badgeText: {
-    width: 66,
     height: 27,
     color: '#212529',
     fontSize: 18,
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.2
   },
   badgeSmText: {
-    width: 64,
     height: 18,
     color: '#b0b8bf',
     fontSize: 12,

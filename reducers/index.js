@@ -7,7 +7,9 @@ export default combineReducers({
   getContentsError,
   loadContents,
   contents,
+
   getSearchError,
   loadSearch,
-  searches
+  searches,
+
 });

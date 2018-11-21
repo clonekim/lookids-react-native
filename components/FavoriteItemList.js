@@ -2,6 +2,7 @@ import React from 'react';
 import {TouchableOpacity, Button, FlatList, StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 import {createStackNavigator, NavigationEvents } from 'react-navigation';
 import util from '../util';
+import { s3Url } from '../config';
 
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -25,16 +26,21 @@ export default class extends React.Component {
 
   componentDidMount() {
     let threads = [
-      {id:1, path: 'http://192.168.0.148:8000/images/p1.png', name: '키즈 맨투맨 모음', price: 12800},
-      {id:2, path: 'http://192.168.0.148:8000/images/p2.png', name: '양털 집업', price: 32000},
-      {id:3, path: 'http://192.168.0.148:8000/images/p3.png', name: '스내지 신상품', price: 49000},
-      {id:4, path: 'http://192.168.0.148:8000/images/p4.png', name: '간절기 레이어드', price: 32000},
-      {id:5, path: 'http://192.168.0.148:8000/images/p5.png', name: '블랙 무스', price: 68000},
-      {id:6, path: 'http://192.168.0.148:8000/images/p6.png', name: '꼬마숙녀 투피스', price: 25000},
-      {id:7, path: 'http://192.168.0.148:8000/images/p1.png', name: '키즈 맨투맨 모음', price: 12800},
-      {id:8, path: 'http://192.168.0.148:8000/images/p2.png', name: '양털 집업', price: 32000},
-      {id:9, path: 'http://192.168.0.148:8000/images/p3.png', name: '스내지 신상품', price: 49000},
+      {id:1, path: 'p1.png', name: '키즈 맨투맨 모음', price: 12800},
+      {id:2, path: 'p2.png', name: '양털 집업', price: 32000},
+      {id:3, path: 'p3.png', name: '스내지 신상품', price: 49000},
+      {id:4, path: 'p4.png', name: '간절기 레이어드', price: 32000},
+      {id:5, path: 'p5.png', name: '블랙 무스', price: 68000},
+      {id:6, path: 'p6.png', name: '꼬마숙녀 투피스', price: 25000},
+      {id:7, path: 'p1.png', name: '키즈 맨투맨 모음', price: 12800},
+      {id:8, path: 'p2.png', name: '양털 집업', price: 32000},
+      {id:9, path: 'p3.png', name: '스내지 신상품', price: 49000},
     ];
+    threads.map((i) => {
+      i.path = s3Url + '/sample/' + i.path
+      return i      
+    });
+
     this.setState({threads:threads});
   }
 
@@ -50,9 +56,9 @@ export default class extends React.Component {
             return <View style={[styles.itemInvisible]} />;
           }
           return (
-            <TouchableOpacity style={{flex: 1, }} >
+            <TouchableOpacity style={{flex: 1}} >
               <View>
-                <View style={{alignItems:'center'}}>
+                <View style={{alignItems:'center', padding:2}}>
                   <Image source={{uri: item.path }} style={{width:127, height: 70}}/>
                 </View>
                 
