@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withNavigationFocus } from 'react-navigation';
+import { NavigationEvents } from 'react-navigation';
 import { Platform, View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import HomeListItem from './HomeListItem';
 import SearchBox    from './SearchBox';
 import { fetchStores } from '../actions';
 import NavigationService from '../navigationService';
-import { apiEndPoint } from '../config'
+import { apiEndPoint } from '../config';
 
 
 
@@ -16,21 +16,15 @@ class HomeBoard extends React.Component {
     tabBarLabel: '샵랭킹'
   };
 
-  constructor() {
-    super();
-  }
-  
-  componentDidMount() {
-    this.props.fetchData( apiEndPoint + '/stores');
-  }
 
   render() {
     if(this.props.isPending) {
-      return <ActivityIndicator size="small" />
+      return <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><ActivityIndicator size="small" /></View>;
     }
 
     return (      
       <View style={{flex:1}}>
+        <NavigationEvents onWillFocus={() => this.props.fetchData( apiEndPoint +'/stores')} />
         <View style={{height:2, backgroundColor:'#dddddd'}}></View>
         <SearchBox path={'HomeSearch'}>쇼핑몰 검색 </SearchBox>
         <FlatList

@@ -10,9 +10,20 @@ export const getPending = state => ({
   isPending: state
 })
 
-export const fetchStoreSuccess = stores => ({
-  type: 'FETCH_SUCCESS',
+export const fetchStoresSuccess = stores => ({
+  type: 'FETCH_STORES_SUCCESS',
   stores
+})
+
+export const fetchStoreSuccess = store => ({
+  type: 'FETCH_STORE_SUCCESS',
+  store
+})
+
+
+export const fetchItemsSuccess = items => ({
+  type: 'FETCH_ITEMS_SUCCESS',
+  items
 })
 
 export const fetchSearchSuccess = searches => ({
@@ -24,6 +35,13 @@ export const postPayloadSuccess = payload =>({
   type: 'POST_PAYLOAD_SUCCESS',
   payload
 })
+
+export const updateFavoriteSuccess = store =>({
+  type: 'UPDATE_FAVORITE_SUCCESS',
+  store
+})
+
+
 
 
 export const fetchStores = url => {
@@ -40,13 +58,13 @@ export const fetchStores = url => {
         return response;
       })
       .then((response) => response.json())
-      .then((payload) => dispatch(fetchStoreSuccess(payload)))
+      .then((payload) => dispatch(fetchStoresSuccess(payload)))
       .catch(() => dispatch(getFetchError(true)));
   }
 }
 
 
-export const findStores = (url) => {
+export const fetchItems = (url) => {
   return (dispatch) => {
     dispatch(getPending(true));
     
@@ -59,7 +77,28 @@ export const findStores = (url) => {
         return response;
       })
       .then((response) => response.json())
-      .then((payload) => dispatch(fetchSearchSuccess(payload)))
+      .then((payload) => dispatch(fetchItemsSuccess(payload)))
+      .catch(() => dispatch(getFetchError(true)));
+
+  }
+}
+
+
+
+export const findStore = (url) => {
+  return (dispatch) => {
+    dispatch(getPending(true));
+    
+    fetch(url)
+      .then((response) => {
+        if(!response.ok) {
+          throw Error(response.statusText);
+        }
+        dispatch(getPending(false));
+        return response;
+      })
+      .then((response) => response.json())
+      .then((payload) => dispatch(fetchStoreSuccess(payload)))
       .catch(() => dispatch(getFetchError(true)));
 
   }
@@ -71,9 +110,9 @@ const HEADERS = {
   'Content-Type': 'application/json'
 }
 
-export const sendSuggest = (url, keywordJson) => {
+
+export const updateFavorite = (url, requestPayload) => {
   return (dispatch) => {
-    dispatch(getPending(true));
     AsyncStorage.getItem('token', (err, result) => {
       let headers = Object.assign(HEADERS, {
         'Authorization': 'Bearer ' + result
@@ -82,21 +121,38 @@ export const sendSuggest = (url, keywordJson) => {
       fetch(url,{
         method:'POST',
         headers: headers,
-        body: JSON.stringify(keywordJson)
+        body: JSON.stringify(requestPayload)
       }).then((response) => {
         if(!response.ok) {
           throw Error(response.statusText);
         }
-        dispatch(getPending(false));
         return response;
       }).then((response) => response.json())
-        .then((payload) => dispatch(postPayloadSuccess(payload)))
+        .then((payload) => dispatch(updateFavoriteSuccess(payload)))
         .catch(() => dispatch(getFetchError(true)));
     })
-
-
-
   }
 }
 
 
+export const deleteFavorite = (url) => {
+  return (dispatch) => {
+    AsyncStorage.getItem('token', (err, result) => {
+      let headers = Object.assign(HEADERS, {
+        'Authorization': 'Bearer ' + result
+      })
+      
+      fetch(url,{
+        method:'DELETE',
+        headers: headers
+      }).then((response) => {
+        if(!response.ok) {
+          throw Error(response.statusText);
+        }
+        return response;
+      }).then((response) => response.json())
+        .then((payload) => dispatch(updateFavoriteSuccess(payload)))
+        .catch(() => dispatch(getFetchError(true)));
+    })
+  }
+}

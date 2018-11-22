@@ -1,5 +1,6 @@
 import React from 'react';
-import {FlatList, Image, View, Text, Button, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import {FlatList, Image, View, Text, Button, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import Masonry from 'react-native-masonry-layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +10,7 @@ import Badge             from './Badge';
 import ItemSearchBox     from './ItemSearchBox';
 import { apiEndPoint } from '../config';
 import util from '../util';
+import { findStore } from '../actions';
 
 class HomePage extends React.Component {
   constructor() {
@@ -19,27 +21,34 @@ class HomePage extends React.Component {
     };
   }
   
-  fetchData({state}) {
-    fetch(apiEndPoint + '/stores/' +state.params.id + '/items')
+  componentWillMount() {
+    let id = this.props.navigation.getParam('id');
+    this.props.fetchData(apiEndPoint + '/stores/' + id)
+
+    fetch(apiEndPoint + '/stores/' + id + '/items')
     .then(res => res.json())
     .then(resJson => {
-
       this.setState({page:resJson.page, limit: resJson.limit});
-      this.refs.masonry.addItems(resJson.rows);
-      
+      this.refs.masonry.addItems(resJson.rows);      
     });
   }
 
+  
+
   render() {
+    if(this.props.isPending) {
+      return <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><ActivityIndicator size="small" /></View>;
+    }
+
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <NavigationEvents onWillFocus={payload => this.fetchData(payload)}/>
         <HomePageNavigator {...this.props}/>
         <Badge {...this.props.navigation.state.params} />
         <ItemSearchBox />
         <View style={{flex: 5}}>
           <Masonry
-            ref="masonry"
+            ref='masonry'
+            onScroll={this.reactOnScroll}
             columns={3} 
             containerStyle={{
               paddingTop: 4,
@@ -51,13 +60,16 @@ class HomePage extends React.Component {
             renderItem={item => {
               return (
                 <View style={{
-                        margin: 2,
-                        padding: 8,
-                        borderRadius: 2,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                        borderColor: '#dedede',
-                      }}>
+
+                  alignItems:'center',
+                  overflow: 'hidden',
+                  width: 112,
+
+
+                  shadowColor: 'rgba(73, 80, 87, 0.1)',
+                  shadowOffset: { width: 1, height: 0 },
+                  shadowRadius: 1,
+                  backgroundColor: '#ffffff'}}>
 
                   <View style={{alignItems:'center'}}>
                     <TouchableOpacity style={{width:113, height:130}} onPress={()=> NavigationService.navigate('ItemWebPage', item)}>
@@ -66,14 +78,14 @@ class HomePage extends React.Component {
                   </View>
                   
                   <View style={{padding:2}}>
-                    <Text style={{fontSize: 12, fontWeight:'400'}}>{item.name}</Text>
-                    <Text style={{fontSize: 12, fontWeight:'700'}}>{util.currencyFormat(item.price)}원</Text>
+                    <Text style={{fontSize: 10, color:'#495057', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400'}}>{item.name}</Text>
+                    <Text style={{fontSize: 10, color:'#343a40', fontFamily:'Noto Sans CJK KR Bold',  fontWeight:'700'}}>{util.currencyFormat(item.price)}원</Text>
                   </View>
+                  <View style={{flex:1, height:3, backgroundColor:'gray'}}></View>
 
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{height:27}}>
                     <View style={{flex:1, flexDirection:'row', justifyContent:'center', alignItems:'center', borderTopWidth: 1, borderColor:'#efefef'}}>
-                      <Icon name="star" size={16} style={{ marginTop: 4, marginLeft:4, color:'yellow' }} />
-                      <Text style={{fontSize: 12, paddingLeft: 5}}>찜</Text>
+                        <Text style={{fontSize: 10, color:'#868e96', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400',  paddingLeft: 5}}>찜</Text>
                     </View>                  
                   </TouchableOpacity>
 
@@ -86,4 +98,18 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+
+
+const mapStateToProps = state => ({
+  store: state.store,
+  hasError: state.getFetchError,
+  isPending: state.getPending
+});
+
+const mapDispatchToProps= dispatch => ({
+  fetchData: (url) => dispatch(findStore(url))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+
+

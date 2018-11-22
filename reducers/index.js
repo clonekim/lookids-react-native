@@ -21,12 +21,25 @@ const getPending = (state = false, action) => {
 
 const stores = (state = [], action) => {
   switch (action.type) {
-    case 'FETCH_SUCCESS':
+    case 'FETCH_STORES_SUCCESS':
       return action.stores;
     default:
       return state;
   }
 }
+
+const store = (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_STORE_SUCCESS':
+      return action.store;
+    case 'UPDATE_FAVORITE_SUCCESS':
+      return action.store;
+    default:
+      return state;
+  }
+}
+
+
 
 const searches = (state = [], action) => {
   switch (action.type) {
@@ -37,20 +50,22 @@ const searches = (state = [], action) => {
   }
 }
 
-const payload = (state = [], action) => {
+const items = (state = [], action) => {
   switch (action.type) {
-    case 'POST_PAYLOAD_SUCCESS':
-      return action.payload;
+    case 'FETCH_ITEMS_SUCCESS':
+      return action.items;
     default:
       return state;
   }
 }
 
 
+
 export default combineReducers({
   getFetchError,
   getPending,
   stores,
+  store,
   searches,
-  payload
+  items,
 });

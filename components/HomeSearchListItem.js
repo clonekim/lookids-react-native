@@ -6,7 +6,7 @@ export default (props) => (
   <TouchableOpacity onPress={()=> NavigationService.navigate('HomePage', props) } >
     <View style={styles.list}>
       <View style={{paddingLeft:8, paddingRight:14, justifyContent:'center', alignItems:'flex-start'}}>
-        <Image source={require('../assets/img-xxxhdpi.png')} style={{width:48, height:48}}/>
+        <Image source={{uri: props.image_path }} style={{width:48, height:48}}/>
       </View>
 
       <View style={{justifyContent:'center', alignItems:'flex-start'}}>
