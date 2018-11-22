@@ -6,7 +6,7 @@ export default class extends React.Component {
   render() {
     return (
       <View style={styles.badge}> 
-        <Image source={require('../assets/brand.png')} style={{width: 90, height: 90, borderRadius: 90/2}}/>
+        <Image source={{uri: this.props.image_path}} style={{width: 90, height: 90, borderRadius: 90/2}}/>
         <Text style={styles.badgeText}>{this.props.name}</Text>
         <Text style={styles.badgeSmText}>상품수 {util.currencyFormat(this.props.total)}</Text>
       </View>

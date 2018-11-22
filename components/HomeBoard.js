@@ -36,7 +36,8 @@ class HomeBoard extends React.Component {
         <FlatList
           data={this.props.contents}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
+            item.rank = index +1;
             return (
               <TouchableOpacity onPress={()=> NavigationService.navigate('HomePage', item) }>
                 <View style={{flex: 1}}>

@@ -21,11 +21,11 @@ export default class extends Component {
       <View style={styles.list}>
 
         <View style={{width:38, alignItems: 'center', justifyContent:'center'}}>
-          <Text style={{fontSize:12, fontFamily:'Noto Sans', color: '#495057'}}>{this.props.id}</Text>
+          <Text style={{fontSize:12, fontFamily:'Noto Sans', color: '#495057'}}>{this.props.rank}</Text>
         </View>
 
         <View style={{flex:1, justifyContent:'center'}}>
-          <Image source={require('../assets/img-xxxhdpi.png')} style={{width:48, height:48}}/>
+          <Image source={{uri: this.props.image_path}} style={{width:48, height:48}}/>
         </View>
 
         <View style={{flex: 5, flexDirection:'row', alignItems: 'center',  justifyContent:'flex-start'}}>
