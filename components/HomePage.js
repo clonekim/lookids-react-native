@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import HomePageNavigator from './HomePageNavigator';
 import NavigationService from '../navigationService';
 import Badge             from './Badge';
+import ItemSearchBox     from './ItemSearchBox';
 import { apiEndPoint } from '../config';
 import util from '../util';
 
@@ -35,6 +36,7 @@ class HomePage extends React.Component {
         <NavigationEvents onWillFocus={payload => this.fetchData(payload)}/>
         <HomePageNavigator {...this.props}/>
         <Badge {...this.props.navigation.state.params} />
+        <ItemSearchBox />
         <View style={{flex: 5}}>
           <Masonry
             ref="masonry"
