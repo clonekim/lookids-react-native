@@ -4,7 +4,6 @@ import {View,
         TextInput,
         StyleSheet } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationService from '../navigationService';
 
 export default class extends React.Component {
@@ -12,8 +11,8 @@ export default class extends React.Component {
   render(children) {
     return (
       <TouchableWithoutFeedback onPress={() => NavigationService.navigate(this.props.path)}>
-        <View style={{height:50, backgroundColor:'#e6eaed', padding:4}}>
-          <View style={{flex:1, backgroundColor:'#fff', justifyContent:'center'}}>
+        <View style={{height:52, backgroundColor:'#e6eaed', paddingLeft:4, paddingRight:4, paddingTop:6, paddingBottom:6 }}>
+          <View style={{height:40, backgroundColor:'#fff', justifyContent:'center'}}>
             <TextInput style={styles.searchBox}
                        editable={false}
                        defaultValue={this.props.children}/>
@@ -28,6 +27,11 @@ export default class extends React.Component {
 
 const styles =StyleSheet.create({
   searchBox:{
-    padding: 5
+    paddingLeft:10,
+    color: '#b0b8bf',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 20,
+    fontFamily: 'Noto Sans CJK KR Regular'
   }
 });

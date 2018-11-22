@@ -28,12 +28,14 @@ const styles = StyleSheet.create({
     color: '#212529',
     fontSize: 18,
     fontWeight: '400',
+    fontFamily: 'Noto Sans CJK KR Regular',
     letterSpacing: -0.2
   },
   badgeSmText: {
     height: 18,
     color: '#b0b8bf',
     fontSize: 12,
+    fontFamily:'Noto Sans CJK KR Regular',
     fontWeight: '400'
   }
 });

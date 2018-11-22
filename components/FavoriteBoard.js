@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import FavoriteStoreList from './FavoriteStoreList';
 import FavoriteItemList from './FavoriteItemList';
 import NavigationService from '../navigationService';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const FavoriteText =(props) => {
   return <Text style={{color: '#343a40', fontWeight:'500'}}>즐겨찾기 ({props.count})</Text>;

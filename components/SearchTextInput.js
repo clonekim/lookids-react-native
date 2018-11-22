@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
-
+import {View, Text, Image, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import ArrowButton from './ArrowButton';
 
 const CloseButton = (props) => {
   if(props.keyword.trim().length > 0) {
     return (
-      <TouchableOpacity onPress={props.clearHandler}>
-        <Image source={require('../assets/close.png')} style={{height:16, width:16}} />
+      <TouchableOpacity onPress={props.clearHandler} style={{width:50, alignItems:'flex-end'}}>
+        <Image source={require('../assets/close.png')} style={{height:14, width:14}} />
       </TouchableOpacity>
     );
   } else {
@@ -37,20 +37,17 @@ export default class extends React.Component {
   render(){
   
     return (
-      <View style={{height:50, backgroundColor: '#e6eaed', padding: 4, flexDirection:'row'}}>
-        <View style={{flex:1, backgroundColor:'#fff', flexDirection:'row'}}>
-
-          <View style={{alignItems:'center', justifyContent:'center', paddingLeft:16, paddingRight:27}}>
-            <TouchableOpacity onPress={()=> this.props.navigation.goBack()}>
-              <Image source={require('../assets/arrow-left.png')} style={{height:17, width:18}} />
-            </TouchableOpacity>
+      <View style={{height:52, backgroundColor: '#e6eaed', paddingLeft:4, paddingRight:4, paddingTop:6, paddingBottom:6}}>
+        <View style={{height:40, backgroundColor:'#fff', flexDirection:'row'}}>
+          <View style={{paddingLeft:15, justifyContent:'center', width:51}}>
+            <ArrowButton {...this.props} />
           </View>
 
           <View style={{flex:1, alignItem:'stretch', justifyContent:'center'}}>
-            <TextInput style={{backgroundColor:'#fff', fontSize:14}} maxLength={25}  autoFocus={true}  value={this.state.keyword}  onChangeText={(keyword) => this.updateText(keyword)}/>
+            <TextInput style={styles.inputText} maxLength={25}  autoFocus={true}  value={this.state.keyword}  onChangeText={(keyword) => this.updateText(keyword)}/>
           </View>
 
-          <View style={{alignItems:'flex-end', justifyContent:'center', paddingLeft:10, paddingRight:22}}>
+          <View style={{alignItems:'flex-end', justifyContent:'center', paddingLeft:10, paddingRight:12}}>
             <CloseButton keyword={this.state.keyword} clearHandler={this.clearHandler.bind(this)} />
           </View>
 
@@ -59,3 +56,13 @@ export default class extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  inputText: {
+    color: '#343a40',
+    fontFamily: 'Noto Sans CJK KR Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 20
+  }
+});

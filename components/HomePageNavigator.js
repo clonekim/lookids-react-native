@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, Text, Button, TouchableOpacity, ToastAndroid, AsyncStorage} from 'react-native';
+import {FlatList, View, Text, Button, TouchableOpacity, ToastAndroid, AsyncStorage ,StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ArrowButton from './ArrowButton';
 import FavoriteButton from './FavoriteButton';
@@ -33,13 +33,12 @@ export default class extends React.Component {
   
   render() {
     return (
-      <View style={{height:50, flexDirection:'row'}}>
-        <View style={{ alignItems:'flex-start', justifyContent:'center',  paddingLeft: 30}}>
+      <View style={{height:52, flexDirection:'row'}}>
+        <View style={{paddingLeft:15, justifyContent:'center', width:51}}>
           <ArrowButton {...this.props} />
         </View>
-
-        <View style={{alignItems:'flex-start',  justifyContent:'center', paddingLeft: 30}}>
-          <Text style={{fontSize:20}}>{this.props.navigation.getParam('name')}</Text>
+        <View style={{alignItems:'flex-start', justifyContent:'center'}}>
+          <Text style={styles.title}>{this.props.navigation.getParam('name')}</Text>
         </View>
         
         <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight: 13}}>
@@ -49,3 +48,13 @@ export default class extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  title: {
+    height: 29,
+    color: '#212529',
+    fontFamily: 'Noto Sans CJK KR Regular',
+    fontSize: 20,
+    fontWeight: '400'
+  }
+});

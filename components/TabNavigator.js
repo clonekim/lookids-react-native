@@ -13,8 +13,8 @@ const TabNavigator = createMaterialTopTabNavigator ({
   FavoriteBoard, //보관함
 },{
   tabBarOptions: {
-    activeTintColor: 'black',
-    inactiveTintColor: 'gray',
+    activeTintColor: '#ffaf08',
+    inactiveTintColor: '#868e96',
     style: {
       backgroundColor: 'white'
     }

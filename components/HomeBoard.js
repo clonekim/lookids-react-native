@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
-import { Platform, View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { Platform, View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import HomeListItem from './HomeListItem';
 import SearchBox    from './SearchBox';
-import { fetchContents } from '../actions/contents';
+import { fetchStores } from '../actions';
 import NavigationService from '../navigationService';
 import { apiEndPoint } from '../config'
 
@@ -18,10 +18,6 @@ class HomeBoard extends React.Component {
 
   constructor() {
     super();
-    this.state = {
-      isFocused: false
-    }
-
   }
   
   componentDidMount() {
@@ -29,8 +25,8 @@ class HomeBoard extends React.Component {
   }
 
   render() {
-    if(this.props.isLoading) {
-      return <Text> Loading... </Text>
+    if(this.props.isPending) {
+      return <ActivityIndicator size="small" />
     }
 
     return (      
@@ -56,25 +52,14 @@ class HomeBoard extends React.Component {
 }
 
 
-const styles =StyleSheet.create({
-  searchBox:{
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    padding: 10,
-    margin: 4
-  }
-});
-
-
 const mapStateToProps = state => ({
-  contents: state.contents,
-  hasError: state.getContentsError,
-  isLoading: state.loadContents
+  contents: state.stores,
+  hasError: state.getFetchError,
+  isPending: state.getPending
 });
 
 const mapDispatchToProps= dispatch => ({
-  fetchData: (url) => dispatch(fetchContents(url))
+  fetchData: (url) => dispatch(fetchStores(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeBoard);
