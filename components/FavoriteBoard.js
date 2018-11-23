@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import { View, Text, TouchableOpacity } from 'react-native';
-import FavoriteStoreList from './FavoriteStoreList';
+import { NavigationEvents } from 'react-navigation';
+import FavoriteStoreBoard from './FavoriteStoreBoard';
 import FavoriteItemList from './FavoriteItemList';
 import NavigationService from '../navigationService';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {apiEndPoint} from '../config';
+import {fetchFavorites} from '../actions';
 
 
 const FavoriteText =(props) => {
@@ -32,20 +36,26 @@ const MoreButon = (props) => {
 };
 
 
-export default class Item extends Component {
+class FavoriteBoard extends Component {
 
   static navigationOptions = {
     tabBarLabel: '보관함'
   };
 
+  fetchMulti() {
+    this.props.fetchFavor(apiEndPoint + '/favorites')
+  }
+
   render() {
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
+        <NavigationEvents onWillFocus={this.props.fetchMutl} />
+
         <View style={{height:5, backgroundColor:'#dddddd'}}></View>
 
         <View style={{flexDirection:'row', paddingLeft:33, paddingRight: 20,  paddingTop: 10, paddingBottom: 10}}>
           <View style={{flex:1, alignItems:'flex-start'}}>
-            <FavoriteText count={3}/>
+            <FavoriteText count={this.props.favorites.total}/>
           </View>
 
           <View style={{flex:1, alignItems:'flex-end'}}>
@@ -54,7 +64,7 @@ export default class Item extends Component {
         </View>
         
         <View style={{flex:2}}>
-          <FavoriteStoreList />
+          <FavoriteStoreBoard favorites={this.props.favorites.rows||[]} />
         </View>
         
         <View style={{height:5, backgroundColor:'#dddddd'}}></View>
@@ -82,3 +92,15 @@ export default class Item extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  favorites: state.favorites
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  fetchFavor: (url) => dispatch(fetchFavorites(url))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavoriteBoard);

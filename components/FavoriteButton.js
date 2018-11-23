@@ -29,13 +29,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateFavorite: (store) => {
-    if(store.favor == 0)
-      return dispatch(updateFavorite(apiEndPoint +'/favorites',{id: store.id}));
-    else
-      return dispatch(deleteFavorite(apiEndPoint +'/favorites/' + store.id));
-  }
-    
+  updateFavorite: (store) =>  dispatch(updateFavorite(apiEndPoint +'/favorites',{id: store.id, deleted: store.favor }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)( FavoriteButton);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {FlatList, Image, View, Text, Button, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {FlatList, Image, View, Text, Button, TouchableOpacity, ActivityIndicator, AsyncStorage} from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import Masonry from 'react-native-masonry-layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,7 +10,7 @@ import Badge             from './Badge';
 import ItemSearchBox     from './ItemSearchBox';
 import { apiEndPoint } from '../config';
 import util from '../util';
-import { findStore } from '../actions';
+
 
 class HomePage extends React.Component {
   constructor() {
@@ -22,23 +22,25 @@ class HomePage extends React.Component {
   }
   
   componentWillMount() {
-    let id = this.props.navigation.getParam('id');
-    this.props.fetchData(apiEndPoint + '/stores/' + id)
-
-    fetch(apiEndPoint + '/stores/' + id + '/items')
-    .then(res => res.json())
-    .then(resJson => {
-      this.setState({page:resJson.page, limit: resJson.limit});
-      this.refs.masonry.addItems(resJson.rows);      
-    });
+    AsyncStorage.getItem('token', (err, token) => {
+      fetch(apiEndPoint + '/stores/' + this.props.navigation.getParam('id') + '/items', {
+        method: 'GET',
+        headers:{
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +token
+        }
+      })
+        .then(res => res.json())
+        .then(resJson => {
+          this.setState({page:resJson.page, limit: resJson.limit});
+          this.refs.masonry.addItems(resJson.rows);      
+        });
+    })    
   }
 
-  
 
   render() {
-    if(this.props.isPending) {
-      return <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><ActivityIndicator size="small" /></View>;
-    }
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
@@ -48,7 +50,6 @@ class HomePage extends React.Component {
         <View style={{flex: 5}}>
           <Masonry
             ref='masonry'
-            onScroll={this.reactOnScroll}
             columns={3} 
             containerStyle={{
               paddingTop: 4,
@@ -99,17 +100,5 @@ class HomePage extends React.Component {
 }
 
 
-
-const mapStateToProps = state => ({
-  store: state.store,
-  hasError: state.getFetchError,
-  isPending: state.getPending
-});
-
-const mapDispatchToProps= dispatch => ({
-  fetchData: (url) => dispatch(findStore(url))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
-
+export default HomePage
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import {TouchableOpacity, Button, FlatList, StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
-import {createStackNavigator, NavigationEvents } from 'react-navigation';
-import {s3Url} from '../config';
+import {connect} from 'react-redux';
+import {TouchableOpacity, Button, FlatList, StyleSheet, Text, View, Image } from 'react-native';
+
 
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -15,39 +15,12 @@ const formatData = (data, numColumns) => {
 };
 
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      threads: []
-    };
-  }
-
-  componentDidMount() {
-    let threads = [
-      {id:1, path: 'f1.png', name: '스윙베베'},
-      {id:2, path: 'f2.png', name: '스타일노리터'},
-      {id:3, path: 'f3.png', name: '윌튼키즈'},
-      {id:4, path: 'f4.png', name: '미네뜨'},
-      {id:5, path: 'f5.png', name: '제이키즈'},
-      {id:6, path: 'f6.png', name: '쿠키하우스'},
-      {id:7, path: 'f7.png', name: '윌튼키즈'},
-      {id:8, path: 'f8.png', name: '더보기'},
-
-    ];
-    threads.map((i) => {
-      i.path = s3Url + '/sample/' + i.path
-      return i
-    });
-
-    this.setState({threads:threads});
-  }
+class FavoriteStoreBoard extends React.Component {
 
   render() {
-
     return (
       <FlatList
-        data={formatData(this.state.threads, 4)}
+        data={formatData(this.props.favorites, 4)}
         numColumns={4}
         keyExtractor={(item) =>  item.key|| item.id.toString()}
         renderItem={({item}) => {
@@ -86,3 +59,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   }
 });
+
+export default FavoriteStoreBoard;

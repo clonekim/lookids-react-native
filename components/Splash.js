@@ -16,6 +16,7 @@ export default class Splash extends React.Component {
         body: JSON.stringify({
           uid: RNDeviceInfo.getUniqueID(),
           system: RNDeviceInfo.getSystemName(),
+          timeZone: RNDeviceInfo.getTimezone(),
           userAgent: RNDeviceInfo.getUserAgent()
         })
       })

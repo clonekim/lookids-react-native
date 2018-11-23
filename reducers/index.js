@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-
+import { ToastAndroid } from 'react-native';
 
 const getFetchError = (state = false, action) => {
   switch (action.type) {
@@ -33,6 +33,8 @@ const store = (state = [], action) => {
     case 'FETCH_STORE_SUCCESS':
       return action.store;
     case 'UPDATE_FAVORITE_SUCCESS':
+      let msg = action.store.favor == 1 ? '보관함에 즐겨찾기 되었습니다': '즐겨찾기를 취소했습니다';
+      ToastAndroid.show(msg, ToastAndroid.SHORT);
       return action.store;
     default:
       return state;
@@ -50,10 +52,20 @@ const searches = (state = [], action) => {
   }
 }
 
+
 const items = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_ITEMS_SUCCESS':
       return action.items;
+    default:
+      return state;
+  }
+}
+
+const favorites = (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_FAVORITES_SUCCESS':
+      return action.favorites;
     default:
       return state;
   }
@@ -68,4 +80,5 @@ export default combineReducers({
   store,
   searches,
   items,
+  favorites,
 });

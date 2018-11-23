@@ -1,8 +1,16 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import util from '../util';
+import {apiEndPoint} from '../config';
+import {findStore } from '../actions';
 
-export default class extends React.Component {
+class Badge extends React.Component {
+
+  componentWillMount() {
+    this.props.fetchData(apiEndPoint + '/stores/' + this.props.id)
+  }
+
   render() {
     return (
       <View style={styles.badge}> 
@@ -39,3 +47,16 @@ const styles = StyleSheet.create({
     fontWeight: '400'
   }
 });
+
+  
+const mapStateToProps = state => ({
+  store: state.store,
+  hasError: state.getFetchError,
+  isPending: state.getPending
+});
+
+const mapDispatchToProps= dispatch => ({
+  fetchData: (url) => dispatch(findStore(url))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Badge);

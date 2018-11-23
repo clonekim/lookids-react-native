@@ -20,7 +20,6 @@ export const fetchStoreSuccess = store => ({
   store
 })
 
-
 export const fetchItemsSuccess = items => ({
   type: 'FETCH_ITEMS_SUCCESS',
   items
@@ -30,6 +29,12 @@ export const fetchSearchSuccess = searches => ({
   type: 'FETCH_SEARCH_SUCCESS',
   searches
 })
+
+export const fetchFavoritesSuccess = favorites => ({
+  type: 'FETCH_FAVORITES_SUCCESS',
+  favorites
+})
+
 
 export const postPayloadSuccess = payload =>({
   type: 'POST_PAYLOAD_SUCCESS',
@@ -43,43 +48,67 @@ export const updateFavoriteSuccess = store =>({
 
 
 
+const HEADERS = {
+  'Accept':       'application/json',
+  'Content-Type': 'application/json'
+}
+
 
 export const fetchStores = url => {
-
+  
   return (dispatch) => {
-    dispatch(getPending(true));
-
-    fetch(url)
-      .then((response) => {
-        if(!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(getPending(false));
-        return response;
+    AsyncStorage.getItem('token', (err, token) => {
+      let headers = Object.assign(HEADERS, {
+        'Authorization': 'Bearer ' + token
       })
-      .then((response) => response.json())
-      .then((payload) => dispatch(fetchStoresSuccess(payload)))
-      .catch(() => dispatch(getFetchError(true)));
+
+      dispatch(getPending(true));
+
+      fetch(url,{
+        method: 'GET',
+        headers: headers        
+      })
+        .then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          dispatch(getPending(false));
+          return response;
+        })
+        .then((response) => response.json())
+        .then((payload) => dispatch(fetchStoresSuccess(payload)))
+        .catch(() => dispatch(getFetchError(true)));
+    })
   }
 }
 
 
 export const fetchItems = (url) => {
   return (dispatch) => {
-    dispatch(getPending(true));
-    
-    fetch(url)
-      .then((response) => {
-        if(!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(getPending(false));
-        return response;
-      })
-      .then((response) => response.json())
-      .then((payload) => dispatch(fetchItemsSuccess(payload)))
-      .catch(() => dispatch(getFetchError(true)));
 
+    AsyncStorage.getItem('token', (err, token) => {
+
+      let headers = Object.assign(HEADERS, {
+        'Authorization': 'Bearer ' + token
+      })
+
+      dispatch(getPending(true));
+      
+      fetch(url,{
+        method:'GET',
+        headers: headers
+      })
+        .then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          dispatch(getPending(false));
+          return response;
+        })
+        .then((response) => response.json())
+        .then((payload) => dispatch(fetchItemsSuccess(payload)))
+        .catch(() => dispatch(getFetchError(true)));
+    })
   }
 }
 
@@ -87,72 +116,79 @@ export const fetchItems = (url) => {
 
 export const findStore = (url) => {
   return (dispatch) => {
-    dispatch(getPending(true));
-    
-    fetch(url)
-      .then((response) => {
-        if(!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(getPending(false));
-        return response;
+    AsyncStorage.getItem('token', (err, token) => {
+      let headers = Object.assign(HEADERS, {
+        'Authorization': 'Bearer ' + token
       })
-      .then((response) => response.json())
-      .then((payload) => dispatch(fetchStoreSuccess(payload)))
-      .catch(() => dispatch(getFetchError(true)));
 
+      dispatch(getPending(true));
+
+      fetch(url,{
+        method:'GET',
+        headers: headers
+      })
+        .then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          dispatch(getPending(false));
+          return response;
+        })
+        .then((response) => response.json())
+        .then((payload) => dispatch(fetchStoreSuccess(payload)))
+        .catch(() => dispatch(getFetchError(true)));
+    })
   }
-}
-
-
-const HEADERS = {
-  'Accept':       'application/json',
-  'Content-Type': 'application/json'
 }
 
 
 export const updateFavorite = (url, requestPayload) => {
   return (dispatch) => {
-    AsyncStorage.getItem('token', (err, result) => {
-      let headers = Object.assign(HEADERS, {
-        'Authorization': 'Bearer ' + result
+    console.log(url, requestPayload);
+
+      AsyncStorage.getItem('token', (err, token) => {
+        let headers = Object.assign(HEADERS, {
+          'Authorization': 'Bearer ' + token
+        })
+        
+        fetch(url,{
+          method:'PATCH',
+          headers: headers,
+          body: JSON.stringify(requestPayload)
+        }).then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          return response;
+        }).then((response) => response.json())
+          .then((payload) => dispatch(updateFavoriteSuccess(payload)))
+          .catch(() => dispatch(getFetchError(true)));
       })
-      
-      fetch(url,{
-        method:'POST',
-        headers: headers,
-        body: JSON.stringify(requestPayload)
-      }).then((response) => {
-        if(!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response;
-      }).then((response) => response.json())
-        .then((payload) => dispatch(updateFavoriteSuccess(payload)))
-        .catch(() => dispatch(getFetchError(true)));
-    })
   }
 }
 
 
-export const deleteFavorite = (url) => {
+
+export const fetchFavorites = (url, requestPayload) => {
   return (dispatch) => {
-    AsyncStorage.getItem('token', (err, result) => {
-      let headers = Object.assign(HEADERS, {
-        'Authorization': 'Bearer ' + result
+    console.log(url, requestPayload);
+
+      AsyncStorage.getItem('token', (err, token) => {
+        let headers = Object.assign(HEADERS, {
+          'Authorization': 'Bearer ' + token
+        })
+        
+        fetch(url,{
+          method:'GET',
+          headers: headers
+        }).then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          return response;
+        }).then((response) => response.json())
+          .then((payload) => dispatch(fetchFavoriteSuccess(payload)))
+          .catch(() => dispatch(getFetchError(true)));
       })
-      
-      fetch(url,{
-        method:'DELETE',
-        headers: headers
-      }).then((response) => {
-        if(!response.ok) {
-          throw Error(response.statusText);
-        }
-        return response;
-      }).then((response) => response.json())
-        .then((payload) => dispatch(updateFavoriteSuccess(payload)))
-        .catch(() => dispatch(getFetchError(true)));
-    })
   }
 }
