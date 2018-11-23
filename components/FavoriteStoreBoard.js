@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {TouchableOpacity, Button, FlatList, StyleSheet, Text, View, Image } from 'react-native';
 
 
@@ -15,12 +14,12 @@ const formatData = (data, numColumns) => {
 };
 
 
-class FavoriteStoreBoard extends React.Component {
+class FavoriteStoreBoard = (props) => {
 
   render() {
     return (
       <FlatList
-        data={formatData(this.props.favorites, 4)}
+        data={formatData(props.favorites, 4)}
         numColumns={4}
         keyExtractor={(item) =>  item.key|| item.id.toString()}
         renderItem={({item}) => {

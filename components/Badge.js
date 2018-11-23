@@ -25,6 +25,7 @@ class Badge extends React.Component {
 const styles = StyleSheet.create({
   badge: {
     height: 140,
+    paddingTop:20,
     justifyContent:'flex-start',
     flexDirection:'column',
     backgroundColor: '#fff',

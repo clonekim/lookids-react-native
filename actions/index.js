@@ -169,9 +169,8 @@ export const updateFavorite = (url, requestPayload) => {
 
 
 
-export const fetchFavorites = (url, requestPayload) => {
+export const fetchFavorites = (url) => {
   return (dispatch) => {
-    console.log(url, requestPayload);
 
       AsyncStorage.getItem('token', (err, token) => {
         let headers = Object.assign(HEADERS, {
@@ -187,7 +186,7 @@ export const fetchFavorites = (url, requestPayload) => {
           }
           return response;
         }).then((response) => response.json())
-          .then((payload) => dispatch(fetchFavoriteSuccess(payload)))
+          .then((payload) => dispatch(fetchFavoriteSuccess(payload.rows)))
           .catch(() => dispatch(getFetchError(true)));
       })
   }

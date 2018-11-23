@@ -49,13 +49,13 @@ class FavoriteBoard extends Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <NavigationEvents onWillFocus={this.props.fetchMutl} />
+        <NavigationEvents onWillFocus={this.fetchMulti.bind(this)} />
 
         <View style={{height:5, backgroundColor:'#dddddd'}}></View>
 
         <View style={{flexDirection:'row', paddingLeft:33, paddingRight: 20,  paddingTop: 10, paddingBottom: 10}}>
           <View style={{flex:1, alignItems:'flex-start'}}>
-            <FavoriteText count={this.props.favorites.total}/>
+            <FavoriteText count={this.props.totals}/>
           </View>
 
           <View style={{flex:1, alignItems:'flex-end'}}>
@@ -64,7 +64,7 @@ class FavoriteBoard extends Component {
         </View>
         
         <View style={{flex:2}}>
-          <FavoriteStoreBoard favorites={this.props.favorites.rows||[]} />
+          <FavoriteStoreBoard favorites={this.props.contents ||[]} />
         </View>
         
         <View style={{height:5, backgroundColor:'#dddddd'}}></View>
@@ -94,7 +94,8 @@ class FavoriteBoard extends Component {
 }
 
 const mapStateToProps = state => ({
-  favorites: state.favorites
+  contents: state.favorites.rows,
+  totals: state.favorites.total,
 });
 
 

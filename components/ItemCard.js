@@ -35,8 +35,8 @@ const ItemCard  = (props) => (
       </TouchableOpacity>
     </View>
     
-    <View style={{padding:2, alignItems:'flex-start'}}>
-      <Text style={{fontSize: 10, color:'#495057', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400'}}>{props.item.name}</Text>
+    <View style={{padding:2, width:120}}>
+      <Text style={{fontSize: 10, color:'#495057', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400'}}>{props.item.name.trim()}</Text>
       <Text style={{fontSize: 10, color:'#343a40', fontFamily:'Noto Sans CJK KR Bold',  fontWeight:'700'}}>{util.currencyFormat(props.item.price)}원</Text>
     </View>
 
@@ -49,7 +49,7 @@ const ItemCard  = (props) => (
       </View>                  
     </TouchableOpacity>
     
-    <RankIcon rank={props.item.rank||1}/>
+    <RankIcon rank={props.item.rank}/>
   
   </View>
 );
