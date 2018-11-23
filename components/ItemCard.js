@@ -1,7 +1,21 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import NavigationService from '../navigationService';
 import util from '../util';
+
+const RankIcon = (props) => {
+  if(props.rank && props.rank > 0) {
+    return (
+      <View style={{position:'absolute'}}>
+        <Image source={require('../assets/mark.png')} style={{width:16, height:23, position:'absolute'}} />
+        <Text style={{position:'absolute', color:'#fff',fontSize:10, fontWeight:'400',left:5, top:2}}>{props.rank}</Text>
+      </View>
+    );
+  }else {
+   return null;
+  }
+};
 
 
 const ItemCard  = (props) => (
@@ -16,7 +30,7 @@ const ItemCard  = (props) => (
         backgroundColor: '#ffffff'}}>
 
     <View style={{alignItems:'center'}}>
-      <TouchableOpacity style={{width:120, height:130}} onPress={()=> NavigationService.navigate('ItemWebPage', item)}>
+      <TouchableOpacity style={{width:120, height:130}} onPress={()=> NavigationService.navigate('ItemWebPage', props.item)}>
         <Image source={{uri: props.item.image_path }} style={{position:'absolute', left:0, top:0, width:120, height: 130}}/>
       </TouchableOpacity>
     </View>
@@ -34,9 +48,9 @@ const ItemCard  = (props) => (
         <Text style={{fontSize: 10, color:'#868e96', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400',  paddingLeft: 5}}>찜</Text>
       </View>                  
     </TouchableOpacity>
-
-    <Image source={require('../assets/mark.png')} style={{width:16, height:23, position:'absolute',}} />
-    <Text style={{position:'absolute', color:'#fff', fontSize:10, fontWeight:'400',}}>{props.item.rank}</Text>
+    
+    <RankIcon rank={props.item.rank||1}/>
+  
   </View>
 );
 
