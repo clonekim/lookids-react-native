@@ -42,7 +42,7 @@ const ItemCard  = (props) => (
 
     <View style={{flex:1, height:0, borderWidth:1, borderColor:'#f9f9fa'}}></View>
 
-    <TouchableOpacity style={{height:27}}>
+    <TouchableOpacity style={{height:27}} onPress={()=> props.handler(props.item)}>
       <View style={{flex:1, flexDirection:'row', justifyContent:'center', alignItems:'center', borderTopWidth: 1, borderColor:'#efefef'}}>
         <Icon name="star" size={11} color={props.item.favor ==1 ? '#ffaf08':'#ffffff'} />
         <Text style={{fontSize: 10, color:'#868e96', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400',  paddingLeft: 5}}>찜</Text>

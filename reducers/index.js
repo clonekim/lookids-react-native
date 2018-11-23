@@ -33,7 +33,7 @@ const store = (state = [], action) => {
     case 'FETCH_STORE_SUCCESS':
       return action.store;
     case 'UPDATE_FAVORITE_SUCCESS':
-      let msg = action.store.favor == 1 ? '보관함에 즐겨찾기 되었습니다': '즐겨찾기를 취소했습니다';
+      let msg = action.store.favor == 1 ? '보관함에 즐겨찾기(+) 되었습니다': '즐겨찾기(-)를 취소했습니다';
       ToastAndroid.show(msg, ToastAndroid.SHORT);
       return action.store;
     default:
@@ -62,10 +62,20 @@ const items = (state = [], action) => {
   }
 }
 
-const favorites = (state = [], action) => {
+const favorites = (state = {rows:[], total:0}, action) => {
   switch (action.type) {
     case 'FETCH_FAVORITES_SUCCESS':
       return action.favorites;
+    default:
+      return state;
+  }
+}
+
+
+const stars = (state = {rows:[], total:0}, action) => {
+  switch (action.type) {
+    case 'FETCH_STARS_SUCCESS':
+      return action.stars;
     default:
       return state;
   }
@@ -81,4 +91,5 @@ export default combineReducers({
   searches,
   items,
   favorites,
+  stars,
 });

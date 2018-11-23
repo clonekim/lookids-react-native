@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, Button, FlatList, StyleSheet, Text, View, Image } from 'react-native';
-
+import NavigationService from '../navigationService';
 
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -14,12 +14,11 @@ const formatData = (data, numColumns) => {
 };
 
 
-class FavoriteStoreBoard = (props) => {
+export default (props) => {
 
-  render() {
-    return (
+  return (
       <FlatList
-        data={formatData(props.favorites, 4)}
+        data={formatData(props.rows, 4)}
         numColumns={4}
         keyExtractor={(item) =>  item.key|| item.id.toString()}
         renderItem={({item}) => {
@@ -27,9 +26,9 @@ class FavoriteStoreBoard = (props) => {
             return <View style={[styles.itemInvisible]} />;
           }
           return (
-            <TouchableOpacity style={{flex: 1, }} >
+            <TouchableOpacity style={{flex: 1 }} onPress={()=> NavigationService.navigate('HomePage', item)} >
               <View style={styles.itemView}>
-                <Image source={{uri: item.path }} style={{width:56, height: 56}}/>
+                <Image source={{uri: item.image_path }} style={{width:56, height: 56, borderRadius: 56/2}}/>
                 <Text ellipsizeMode={'tail'}
                       numberOfLines={1}
                       style={{fontSize: 12}} >{item.name}</Text>
@@ -38,7 +37,7 @@ class FavoriteStoreBoard = (props) => {
           );
         }}/>
     );
-  }
+  
 }
 
 const styles = StyleSheet.create({
@@ -58,5 +57,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   }
 });
-
-export default FavoriteStoreBoard;

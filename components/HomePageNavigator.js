@@ -13,7 +13,7 @@ export default class extends React.Component {
           <ArrowButton {...this.props} />
         </View>
         <View style={{alignItems:'flex-start', justifyContent:'center'}}>
-          <Text style={styles.title}>{this.props.navigation.getParam('name')}</Text>
+          <Text style={styles.title}>{this.props.navigation.getParam('store_name')}</Text>
         </View>
         
         <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight: 13}}>

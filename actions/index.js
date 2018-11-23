@@ -35,6 +35,10 @@ export const fetchFavoritesSuccess = favorites => ({
   favorites
 })
 
+export const fetchStarsSuccess = stars => ({
+  type: 'FETCH_STARS_SUCCESS',
+  stars
+})
 
 export const postPayloadSuccess = payload =>({
   type: 'POST_PAYLOAD_SUCCESS',
@@ -81,6 +85,35 @@ export const fetchStores = url => {
     })
   }
 }
+
+export const fetchSearch = url => {
+  
+  return (dispatch) => {
+    AsyncStorage.getItem('token', (err, token) => {
+      let headers = Object.assign(HEADERS, {
+        'Authorization': 'Bearer ' + token
+      })
+
+      dispatch(getPending(true));
+
+      fetch(url,{
+        method: 'GET',
+        headers: headers        
+      })
+        .then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          dispatch(getPending(false));
+          return response;
+        })
+        .then((response) => response.json())
+        .then((payload) => dispatch(fetchSearchSuccess(payload)))
+        .catch(() => dispatch(getFetchError(true)));
+    })
+  }
+}
+
 
 
 export const fetchItems = (url) => {
@@ -186,7 +219,32 @@ export const fetchFavorites = (url) => {
           }
           return response;
         }).then((response) => response.json())
-          .then((payload) => dispatch(fetchFavoriteSuccess(payload.rows)))
+          .then((payload) => dispatch(fetchFavoritesSuccess(payload)))
+          .catch(() => dispatch(getFetchError(true)));
+      })
+  }
+}
+
+
+
+export const fetchStars = (url) => {
+  return (dispatch) => {
+
+      AsyncStorage.getItem('token', (err, token) => {
+        let headers = Object.assign(HEADERS, {
+          'Authorization': 'Bearer ' + token
+        })
+        
+        fetch(url,{
+          method:'GET',
+          headers: headers
+        }).then((response) => {
+          if(!response.ok) {
+            throw Error(response.statusText);
+          }
+          return response;
+        }).then((response) => response.json())
+          .then((payload) => dispatch(fetchStarsSuccess(payload)))
           .catch(() => dispatch(getFetchError(true)));
       })
   }

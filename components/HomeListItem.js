@@ -29,7 +29,7 @@ export default class extends Component {
         </View>
 
         <View style={{flex: 5, flexDirection:'row', alignItems: 'center',  justifyContent:'flex-start'}}>
-          <Text style={styles.contentText}>{this.props.name}</Text>
+          <Text style={styles.contentText}>{this.props.store_name}</Text>
           <FavorIcon favor={this.props.favor}/>
         </View>
 

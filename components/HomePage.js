@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {FlatList, Image, View, Text, Button, TouchableOpacity, ActivityIndicator, AsyncStorage} from 'react-native';
+import {FlatList, Image, View, Text, Button, TouchableOpacity, ActivityIndicator, AsyncStorage, ToastAndroid} from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import Masonry from 'react-native-masonry-layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -40,6 +40,26 @@ class HomePage extends React.Component {
     });
   }
 
+  //찜처리
+  addFavoriteItem(item) {
+    AsyncStorage.getItem('token', (err, token) => {
+      fetch(apiEndPoint + '/stars', {
+        method: 'PATCH',
+        headers:{
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +token
+        },
+        body: JSON.stringify({id:item.id, deleted: item.favor||0})
+      })
+        .then(res => res.json())
+        .then(resJson => {
+          item.favor = resJson.favor
+          let msg = item.favor == 1 ? '보관함에 찜상품으로 등록했습니다': '찜을 취소 했습니다';
+          ToastAndroid.show(msg, ToastAndroid.SHORT);
+        });
+    }); 
+  }
 
   render() {
 
@@ -53,7 +73,7 @@ class HomePage extends React.Component {
             ref='masonry'
             columns={3} 
             keyExtractor={(item) => item.id.toString()}
-            renderItem={item => <ItemCard item={item} />} />
+            renderItem={item => <ItemCard item={item} handler={this.addFavoriteItem.bind(this)} />} />
         </View>
       </View>
     );

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {View, Text, FlatList, TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import HomeSearchListItem from './HomeSearchListItem';
 import SearchTextInput  from './SearchTextInput';
-import {findStores, fetchSearchSuccess, sendSuggest} from '../actions';
+import {fetchSearch, fetchSearchSuccess, sendSuggest} from '../actions';
 import {apiEndPoint} from '../config';
 
 const RequestSearchButton = (props) => {
@@ -100,7 +100,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps= dispatch => ({
-  fetchData: (url) => dispatch(findStores(url)),
+  fetchData: (url) => dispatch(fetchSearch(url)),
   fetchZero: () => dispatch(fetchSearchSuccess([])),
   postSugguest: (url, payload) => dispatch(sendSuggest(url, payload)),
 });
