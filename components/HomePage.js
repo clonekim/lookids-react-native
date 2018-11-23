@@ -36,40 +36,32 @@ class HomePage extends React.Component {
           this.setState({page:resJson.page, limit: resJson.limit});
           this.refs.masonry.addItems(resJson.rows);      
         });
-    })    
+    });
   }
 
 
   render() {
 
     return (
-      <View style={{flex:1, backgroundColor:'#fff'}}>
+      <View style={{flex:1}}>
         <HomePageNavigator {...this.props}/>
         <Badge {...this.props.navigation.state.params} />
         <ItemSearchBox />
-        <View style={{flex: 5}}>
+        <View style={{flex: 5, paddingTop:8, paddingLeft:6, paddingRight:4, paddingBottom:6}}>
           <Masonry
             ref='masonry'
             columns={3} 
-            containerStyle={{
-              paddingTop: 4,
-              paddingRight: 2,
-              paddingLeft: 2,
-              paddingBottom: 2            
-            }}
             keyExtractor={(item) => item.id.toString()}
             renderItem={item => {
               return (
                 <View style={{
-
-                  alignItems:'center',
                   overflow: 'hidden',
                   width: 112,
-
-
                   shadowColor: 'rgba(73, 80, 87, 0.1)',
                   shadowOffset: { width: 1, height: 0 },
                   shadowRadius: 1,
+                  marginBottom: 8,
+                  margin:1,
                   backgroundColor: '#ffffff'}}>
 
                   <View style={{alignItems:'center'}}>
@@ -78,11 +70,12 @@ class HomePage extends React.Component {
                     </TouchableOpacity>
                   </View>
                   
-                  <View style={{padding:2}}>
+                  <View style={{padding:2, alignItems:'flex-start'}}>
                     <Text style={{fontSize: 10, color:'#495057', fontFamily:'Noto Sans CJK KR Regular', fontWeight:'400'}}>{item.name}</Text>
                     <Text style={{fontSize: 10, color:'#343a40', fontFamily:'Noto Sans CJK KR Bold',  fontWeight:'700'}}>{util.currencyFormat(item.price)}원</Text>
                   </View>
-                  <View style={{flex:1, height:3, backgroundColor:'gray'}}></View>
+
+                  <View style={{flex:1, height:1, backgroundColor:'gray'}}></View>
 
                   <TouchableOpacity style={{height:27}}>
                     <View style={{flex:1, flexDirection:'row', justifyContent:'center', alignItems:'center', borderTopWidth: 1, borderColor:'#efefef'}}>
@@ -100,5 +93,5 @@ class HomePage extends React.Component {
 }
 
 
-export default HomePage
+export default HomePage;
 
