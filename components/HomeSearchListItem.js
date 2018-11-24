@@ -10,7 +10,7 @@ export default (props) => (
       </View>
 
       <View style={{justifyContent:'center', alignItems:'flex-start'}}>
-        <Text style={styles.contentText}>{props.name}</Text>
+        <Text style={styles.contentText}>{props.store_name}</Text>
       </View>
     </View>
   </TouchableOpacity>)

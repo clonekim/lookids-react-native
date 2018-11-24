@@ -21,17 +21,17 @@ const RankIcon = (props) => {
 const ItemCard  = (props) => (
   <View style={{
           overflow: 'hidden',
-          width: 120,
+          width: 112,
           shadowColor: 'rgba(73, 80, 87, 0.1)',
           shadowOffset: { width: 1, height: 0 },
           shadowRadius: 1,
-          marginBottom: 8,
+          marginBottom: 8,          
           margin:1,
         backgroundColor: '#ffffff'}}>
 
     <View style={{alignItems:'center'}}>
-      <TouchableOpacity style={{width:120, height:130}} onPress={()=> NavigationService.navigate('ItemWebPage', props.item)}>
-        <Image source={{uri: props.item.image_path }} style={{position:'absolute', left:0, top:0, width:120, height: 130}}/>
+      <TouchableOpacity style={{width:112, height:140}} onPress={()=> NavigationService.navigate('ItemWebPage', props.item)}>
+        <Image source={{uri: props.item.image_path }} style={{position:'absolute', left:0, top:0, width:112, height: 140}}/>
       </TouchableOpacity>
     </View>
     
