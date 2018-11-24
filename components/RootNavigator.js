@@ -3,6 +3,7 @@ import HomeSearch        from './HomeSearch';
 import TabNavigator      from './TabNavigator';
 import HomePage          from './HomePage';
 import ItemWebPage       from './ItemWebPage';
+import ItemSearch        from './ItemSearch';
 import FavoriteStoreEdit from './FavoriteStoreEdit';
 import FavoriteItemEdit  from './FavoriteItemEdit';
 import Splash            from './Splash';
@@ -13,6 +14,7 @@ const RootNavigator = createStackNavigator ({
   HomeSearch,
   HomePage,
   ItemWebPage,
+  ItemSearch,
   FavoriteStoreEdit,
   FavoriteItemEdit   
 },{

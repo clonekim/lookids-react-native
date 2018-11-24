@@ -116,7 +116,7 @@ export const fetchSearch = url => {
 
 
 
-export const fetchItems = (url) => {
+export const fetchItems = (url, target) => {
   return (dispatch) => {
 
     AsyncStorage.getItem('token', (err, token) => {
@@ -139,7 +139,12 @@ export const fetchItems = (url) => {
           return response;
         })
         .then((response) => response.json())
-        .then((payload) => dispatch(fetchItemsSuccess(payload)))
+        .then((payload) => {
+          if(target)
+            target.addItems(payload.rows)
+          else
+            dispatch(fetchItemsSuccess(payload))
+        })
         .catch(() => dispatch(getFetchError(true)));
     })
   }
