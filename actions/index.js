@@ -140,10 +140,12 @@ export const fetchItems = (url, target) => {
         })
         .then((response) => response.json())
         .then((payload) => {
-          if(target)
+          if(target) {
             target.addItems(payload.rows)
-          else
+            dispatch(fetchItemsSuccess([0]))
+          }else {
             dispatch(fetchItemsSuccess(payload))
+          }
         })
         .catch(() => dispatch(getFetchError(true)));
     })

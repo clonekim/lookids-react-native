@@ -1,18 +1,7 @@
 import React from 'react';
 import {View, Text, Image, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import ArrowButton from './ArrowButton';
-
-const CloseButton = (props) => {
-  if(props.keyword.trim().length > 0) {
-    return (
-      <TouchableOpacity onPress={props.clearHandler} style={{width:50, alignItems:'flex-end'}}>
-        <Image source={require('../assets/close.png')} style={{height:14, width:14}} />
-      </TouchableOpacity>
-    );
-  } else {
-    return null;
-  }
-};
+import CloseButton from './CloseButton';
 
 
 export default class extends React.Component {

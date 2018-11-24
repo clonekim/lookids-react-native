@@ -47,9 +47,8 @@ class FavoriteBoard extends Component {
   };
 
   fetchMulti() {
-    this.props.fetchFavors(apiEndPoint + '/favorites');
-    this.props.fetchStars(apiEndPoint + '/stars');
-
+    this.props.fetchFavors(apiEndPoint + '/favorites?page=1&limit=8');
+    this.props.fetchStars(apiEndPoint + '/stars?page=1&limit=9');
   }
 
   render() {

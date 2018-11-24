@@ -8,6 +8,7 @@ import ItemCard    from './ItemCard';
 import {apiEndPoint} from '../config';
 import {fetchItemsSuccess, fetchItems} from '../actions';
 
+
 class ItemSearch extends Component {
   constructor() {
     super();
@@ -18,14 +19,20 @@ class ItemSearch extends Component {
 
   clearHandler() {
     this.setState({keyword: ''});
-    this.masonry.clear();
+
+    if(this.props.contents.rows > 0) {
+      this.props.fetchZero();   
+      this.masonry.clear();
+    }
   }
 
   keySearch() {
     this.props.fetchData(apiEndPoint + '/items?q=' + this.state.keyword.trim().replace(/\n|\t/ig, ''), this.masonry);
   }
 
+
   render() {
+   
     return (
       <View style={{flex:1 ,backgroundColor:'#fff'}}>
         <View style={{height:52, backgroundColor: '#e6eaed', paddingLeft:4, paddingRight:4, paddingTop:6, paddingBottom:6}}>
@@ -48,17 +55,15 @@ class ItemSearch extends Component {
         <Masonry
           ref={m => this.masonry = m }
           columns={3}
-          containerStyle={{
-            backgroundColor:'blue'
-          }}
           keyExtractor={(item) => item.id.toString()}
+          extraData={this.props.contents.rows}
           containerStyle={{
             paddingTop: 4,
             paddingRight: 2,
             paddingLeft: 2,
-            paddingBottom: 2            
+            paddingBottom: 2
           }}
-          renderItem={item => <ItemCard item={item} />}/>
+          renderItem={item => <ItemCard item={item}/>}/>
 
       </View>
 
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  contents: state.ite
+  contents: state.items
 });
 
 const mapDispatchToProps = dispatch => ({
