@@ -66,6 +66,19 @@ const favorites = (state = {rows:[], total:0}, action) => {
   switch (action.type) {
     case 'FETCH_FAVORITES_SUCCESS':
       return action.favorites;
+    case 'MARK_FAVORITE_ID':
+       console.log(action)
+
+       return Object.assign(state,{
+         rows: state.rows.map(i => {
+           if(i.id  == action.id) {
+             i.selected = !i.selected;
+           }
+
+           return i;
+         })
+       });
+
     default:
       return state;
   }

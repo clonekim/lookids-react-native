@@ -7,29 +7,34 @@ const SwitchButton = (props) => {
   if(props.handler) {
     return (
       <View style={{flex:1, justifyContent:'center', alignItems:'flex-end', paddingRight: 20}}>
-        <Icon name={"times-circle"} size={20} color="gray" />
+        <Icon name={"times-circle"} size={20} color={props.selected === true ? 'red': 'gray'} />
       </View>
-    )
+    );
   }else {
     return null;
   }
+};
+
+export default class extends React.Component {
+  render() {
+    return (
+      <TouchableOpacity onPress={()=> this.props.handler? this.props.handler(this.props): NavigationService.navigate('HomePage', this.props)} >
+        <View style={styles.list}>
+          <View style={{paddingLeft:8, paddingRight:14, justifyContent:'center', alignItems:'flex-start'}}>
+            <Image source={{uri: this.props.image_path }} style={{width:48, height:48}}/>
+          </View>
+
+          <View style={{justifyContent:'center', alignItems:'flex-start'}}>
+            <Text style={styles.contentText}>{this.props.store_name}</Text>
+          </View>
+
+          <SwitchButton {...this.props}></SwitchButton>
+          
+        </View>
+      </TouchableOpacity>
+    );
+  }
 }
-
-export default (props) => (
-  <TouchableOpacity onPress={()=> props.handler? props.handler(props): NavigationService.navigate('HomePage', props)} >
-    <View style={styles.list}>
-      <View style={{paddingLeft:8, paddingRight:14, justifyContent:'center', alignItems:'flex-start'}}>
-        <Image source={{uri: props.image_path }} style={{width:48, height:48}}/>
-      </View>
-
-      <View style={{justifyContent:'center', alignItems:'flex-start'}}>
-        <Text style={styles.contentText}>{props.store_name}</Text>
-      </View>
-
-      <SwitchButton {...props}></SwitchButton>
-   
-    </View>
-  </TouchableOpacity>)
 
 
 const styles = StyleSheet.create({

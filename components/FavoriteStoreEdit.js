@@ -3,18 +3,8 @@ import {connect} from 'react-redux';
 import {TouchableOpacity, ToastAndroid, FlatList,  View, Text, StyleSheet } from 'react-native';
 import ArrowButton from './ArrowButton';
 import HomeSearchListItem from './HomeSearchListItem';
-import {fetchFavorites} from '../actions';
+import {fetchFavorites, removeFavorites} from '../actions';
 import {apiEndPoint} from '../config';
-
-
-const EditButton = (props) => {
-
-  return (
-    <TouchableOpacity style={{width:61, height:27, borderColor:'#868e96', borderStyle:'solid', borderWidth:1, alignItems:'center', justifyContent:'center'}}>
-      <Text style={{color:'#495057', fontSize:13, fontFamily:'Noto Sans CJS KR Regular'}}>편집</Text>
-    </TouchableOpacity>
-  );
-};
 
 
 class FavoriteStoreEdit extends React.Component {
@@ -22,7 +12,8 @@ class FavoriteStoreEdit extends React.Component {
   constructor() {
     super();
     this.state = {
-      editMode: 'viewMode'
+      editMode: 'viewMode',
+      clicked:  0,
     };
   }
 
@@ -30,8 +21,23 @@ class FavoriteStoreEdit extends React.Component {
     this.props.fetchData(apiEndPoint + '/favorites?page=1&limit=100');
   }
 
-  selectionHandler(x) {
-    console.log('here', x);
+  selectionHandler(item) {
+    this.props.updateFavoriteMark(item.id)
+    this.setState({clicked: item.id})
+  }
+  
+  applyUpdateFavorites() {
+    let rows = this.props.contents.rows
+        .filter(i => i.selected === true)
+        .map(i=> i.id)
+
+    if(rows.length > 0) {
+      this.props.deleteFavorites(apiEndPoint +'/favorites', rows)
+    }
+  }
+
+  getMarkedCount() {
+    return this.props.contents.rows.filter(i => i.selected === true).length;
   }
 
   render() {
@@ -47,13 +53,14 @@ class FavoriteStoreEdit extends React.Component {
           </View>
 
           <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight: 13}}>
-            <TouchableOpacity style={this.state.editMode == 'viewMode'? styles.editTextTouch:styles.editTextCompleteTouch} onPress={() => this.setState({editMode: this.state.editMode =='viewMode'? 'editMode': 'viewMode'})}>
-              <Text style={this.state.editMode =='viewMode' ? styles.editText: styles.editTextComplete}>{this.state.editMode =='viewMode'? '편집': '완료'}</Text>
+            <TouchableOpacity style={this.getMarkedCount() == 0 ? styles.editTextTouch:styles.editTextCompleteTouch} onPress={() => this.applyUpdateFavorites()}>
+              <Text style={this.getMarkedCount() == 0 ? styles.editText: styles.editTextComplete}>{this.getMarkedCount() == 0 ? '편집': '완료'}</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={{borderWidth:1, height:0, borderColor:'#dee2e6', borderStyle:'solid'}}/>
+        <Text>{JSON.stringify(this.props.contents)}</Text>
         <FlatList
           style={{flex:1}}
           data={this.props.contents.rows}
@@ -128,7 +135,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: (url) => dispatch(fetchFavorites(url))
+  fetchData: (url) => dispatch(fetchFavorites(url)),
+  updateFavoriteMark: (id) => dispatch({type:'MARK_FAVORITE_ID', id: id}),
+  deleteFavorites: (url, params) => dispatch(removeFavorites(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoriteStoreEdit);
